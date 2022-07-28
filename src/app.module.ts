@@ -8,6 +8,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CategoryModule } from './category/category.module';
+import { TodoModule } from './todo/todo.module';
 
 const modules = [
   ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', './.env'] }),
@@ -22,6 +23,7 @@ const modules = [
     autoSchemaFile: 'schema.gql',
   }),
   CategoryModule,
+  TodoModule,
 ];
 
 if (process.env.NODE_ENV !== 'development') {

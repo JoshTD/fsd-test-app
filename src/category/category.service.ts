@@ -21,19 +21,17 @@ export class CategoryService {
     return from(this.categoryRepository.findOneBy({ id: id }));
   }
 
+  getCategoryByTitle(title: string): Observable<ICategory> {
+    return from(this.categoryRepository.findOneBy({ title: title }));
+  }
+
   createCategory(categoryDto: CategoryDto): Observable<ICategory> {
     return from(this.categoryRepository.save(categoryDto));
   }
 
-  updateCategory(categoryData: ICategory): Observable<Boolean> {
-    return from(
-      this.categoryRepository.update({ id: categoryData.id }, categoryData),
-    ).pipe(
-      map((result) => {
-        if (result.affected !== null) return true;
-        else return false;
-      }),
-    );
+  updateCategory(categoryData: ICategory): Observable<ICategory> {
+    this.categoryRepository.update({ id: categoryData.id }, categoryData);
+    return this.getCategoryById(categoryData.id);
   }
 
   deleteCategory(id: number): Observable<Boolean> {

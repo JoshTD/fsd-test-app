@@ -7,15 +7,29 @@ type Category {
 
   """Category title"""
   title: String!
+  todos: [Todo!]
+}
+
+type Todo {
+  id: Int!
+  text: String!
+  isCompleted: Boolean!
+  category: Category
 }
 
 type Query {
   categories: [Category!]!
   category(id: Int!): Category!
+  categoryTitle(title: String!): Category!
+  todos: [Todo!]!
+  todo(id: Int!): Todo!
 }
 
 type Mutation {
   createCategory(title: String!): Category!
-  updateCategory(id: Int!, title: String!): Boolean!
+  updateCategory(id: Int!, title: String!): Category!
   deleteCategory(id: Int!): Boolean!
+  createTodo(categoryId: Int!, text: String!): Todo!
+  updateTodo(id: Int!, text: String!, isCompleted: Boolean!): Todo!
+  deleteTodo(id: Int!): Boolean!
 }
