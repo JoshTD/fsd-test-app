@@ -11,4 +11,11 @@ type Category {
 
 type Query {
   categories: [Category!]!
+  category(id: Int!): Category!
+}
+
+type Mutation {
+  createCategory(title: String!): Category!
+  updateCategory(id: Int!, title: String!): Boolean!
+  deleteCategory(id: Int!): Boolean!
 }
