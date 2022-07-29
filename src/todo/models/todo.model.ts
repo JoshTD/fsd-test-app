@@ -24,7 +24,7 @@ export class Todo {
   isCompleted: boolean;
 
   @ManyToOne((type) => Category, (category) => category.todos)
-  @JoinColumn({ name: 'category', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'category', referencedColumnName: 'title' })
   @Field((type) => Category, { nullable: true })
   category: Category;
 }

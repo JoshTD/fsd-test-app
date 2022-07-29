@@ -29,7 +29,7 @@ type Mutation {
   createCategory(title: String!): Category!
   updateCategory(id: Int!, title: String!): Category!
   deleteCategory(id: Int!): Boolean!
-  createTodo(categoryId: Int!, text: String!): Todo!
-  updateTodo(id: Int!, text: String!, isCompleted: Boolean!): Todo!
+  createTodo(category: String!, text: String!): Todo!
+  updateTodo(id: Int!, text: String!, isCompleted: Boolean!, category: String!): Todo!
   deleteTodo(id: Int!): Boolean!
 }

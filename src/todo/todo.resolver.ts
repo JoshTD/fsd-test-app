@@ -1,15 +1,4 @@
-import {
-  Args,
-  Int,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
-import { map } from 'rxjs';
-import { CategoryService } from 'src/category/category.service';
-import { Category } from 'src/category/models/category.model';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TodoDto } from './models/todo.dto';
 import { ITodo } from './models/todo.interface';
 import { Todo } from './models/todo.model';
@@ -17,10 +6,7 @@ import { TodoService } from './todo.service';
 
 @Resolver((of) => Todo)
 export class TodoResolver {
-  constructor(
-    private todoService: TodoService,
-    private categoryService: CategoryService,
-  ) {}
+  constructor(private todoService: TodoService) {}
 
   @Query((returns) => [Todo])
   async todos() {
@@ -34,13 +20,13 @@ export class TodoResolver {
 
   @Mutation((returns) => Todo)
   async createTodo(
-    @Args('categoryId', { type: () => Int }) categoryId: number, // TODO
+    @Args('category') category: string,
     @Args('text') text: string,
   ) {
     return this.todoService.createTodo({
       text: text,
       isCompleted: false,
-      category: categoryId,
+      category: category,
     } as TodoDto);
   }
 
@@ -49,11 +35,13 @@ export class TodoResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('text') text: string,
     @Args('isCompleted') isCompleted: boolean,
+    @Args('category') category: string,
   ) {
     return this.todoService.updateTodo({
       id: id,
       text: text,
       isCompleted: isCompleted,
+      category: category,
     } as ITodo);
   }
 

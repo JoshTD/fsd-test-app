@@ -58,7 +58,7 @@ export class CategoryResolver {
 
   @ResolveField()
   async todos(@Parent() category: Category) {
-    const { id } = category;
-    return this.todoService.getTodosByCategory(id);
+    const { title } = category;
+    return this.todoService.getTodosByCategory(title);
   }
 }

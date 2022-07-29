@@ -8,5 +8,5 @@ export class TodoDto {
   isCompleted?: boolean;
 
   @IsNumber()
-  category?: number;
+  category: string;
 }

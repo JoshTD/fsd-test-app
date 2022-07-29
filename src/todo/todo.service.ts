@@ -14,14 +14,19 @@ export class TodoService {
   ) {}
 
   getAllTodos(): Observable<ITodo[]> {
-    return from(this.todoRepository.find());
+    return from(this.todoRepository.find({ relations: ['category'] }));
   }
 
   getTodoById(id: number): Observable<ITodo> {
-    return from(this.todoRepository.findOneBy({ id: id }));
+    return from(
+      this.todoRepository.findOne({
+        where: { id: id },
+        relations: ['category'],
+      }),
+    );
   }
 
-  getTodosByCategory(category: number): Observable<ITodo[]> {
+  getTodosByCategory(category: string): Observable<ITodo[]> {
     return from(
       this.todoRepository.find({
         relations: {
