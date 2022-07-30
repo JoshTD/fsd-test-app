@@ -1,0 +1,14 @@
+$base-color: #6200ee;
+
+mat-toolbar {
+  background-color: $base-color;
+  color: white;
+
+  span {
+    font-size: 28px;
+  }
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
