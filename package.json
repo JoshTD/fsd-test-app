@@ -7,9 +7,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "npm run build-back && npm run build-front",
+    "build": "yarn run build-back && yarn run build-front",
     "build-back": "nest build",
-    "build-front": "cd front && ng build",
+    "build-front": "cd front && yarn install && yarn run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main",
     "start:dev": "nest start --watch",
