@@ -9,6 +9,7 @@ import { TableCardComponent } from './table-card/table-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './shared/material/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,8 @@ import { MaterialModule } from './shared/material/material.module';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
