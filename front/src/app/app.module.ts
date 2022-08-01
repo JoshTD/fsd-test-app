@@ -10,6 +10,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './shared/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateCategoryComponent } from './create-category/create-category.component';
+import { CreateTodoComponent } from './create-todo/create-todo.component';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     CardComponent,
     TableCardComponent,
+    CreateCategoryComponent,
+    CreateTodoComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    GraphQLModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -7,7 +7,7 @@ type Category {
 
   """Category title"""
   title: String!
-  todos: [Todo!]
+  todos: [Todo]
 }
 
 type Todo {

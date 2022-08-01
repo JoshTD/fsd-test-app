@@ -12,4 +12,8 @@ export class CardComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  addTodo() {
+    console.log('TODO: Open form create todo');
+  }
 }

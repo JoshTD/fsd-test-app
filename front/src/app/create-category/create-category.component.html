@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-title>Новая категория</mat-card-title>
+  <mat-divider inset></mat-divider>
+  <mat-form-field [formGroup]="categoryFormGroup" appearance="fill">
+    <mat-label>Название категории</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+  <mat-card-actions>
+    <button mat-button (click)="onSubmit()">Добавить</button>
+    <button mat-button (click)="onCancel()">Отмена</button>
+  </mat-card-actions>
+</mat-card>

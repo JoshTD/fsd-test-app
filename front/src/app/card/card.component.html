@@ -1,11 +1,17 @@
 <mat-card>
-  <mat-card-title>{{ category.title }}</mat-card-title>
+  <mat-toolbar>
+    <span>{{ category.title }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button>
+      <mat-icon (click)="addTodo()">add</mat-icon>
+    </button>
+  </mat-toolbar>
+
   <mat-divider></mat-divider>
   <mat-list>
     <mat-list-item *ngFor="let todo of category.todos">
-      <mat-checkbox [(ngModel)]="todo.isCompleted">
-        {{ todo.text }}
-      </mat-checkbox>
+      <mat-checkbox [(ngModel)]="todo.isCompleted"> </mat-checkbox>
+      <span class="todo-text">{{ todo.text }}</span>
     </mat-list-item>
   </mat-list>
 </mat-card>

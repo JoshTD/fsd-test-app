@@ -66,8 +66,54 @@ export class TableCardComponent implements OnInit {
         },
         {
           id: 9,
-          text: 'Что-то там сделать 9',
+          text: 'Что-то там сделать 9, Очень длинное название прям сильно очень очень',
           isCompleted: false,
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: 'Тестирование',
+      todos: [
+        {
+          id: 10,
+          text: 'Что-то там протестировать 10',
+          isCompleted: false,
+        },
+        {
+          id: 11,
+          text: 'Что-то там протестировать 11',
+          isCompleted: true,
+        },
+        {
+          id: 12,
+          text: 'Что-то там протестировать 12',
+          isCompleted: true,
+        },
+        {
+          id: 13,
+          text: 'Что-то там протестировать 13',
+          isCompleted: true,
+        },
+        {
+          id: 14,
+          text: 'Что-то там протестировать 14',
+          isCompleted: false,
+        },
+        {
+          id: 15,
+          text: 'Что-то там протестировать 15',
+          isCompleted: true,
+        },
+        {
+          id: 16,
+          text: 'Что-то там протестировать 16',
+          isCompleted: true,
+        },
+        {
+          id: 17,
+          text: 'Что-то там протестировать 17',
+          isCompleted: true,
         },
       ],
     },

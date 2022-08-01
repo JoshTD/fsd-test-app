@@ -1,1 +1,9 @@
-<card *ngFor="let category of categories" [category]="category"></card>
+<div class="container">
+  <div class="cards">
+    <div *ngFor="let category of categories" class="card">
+      <card [category]="category"></card>
+    </div>
+  </div>
+  <create-category></create-category>
+  <create-todo></create-todo>
+</div>

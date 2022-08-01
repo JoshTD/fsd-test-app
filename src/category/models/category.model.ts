@@ -14,6 +14,6 @@ export class Category {
   title: string;
 
   @OneToMany((type) => Todo, (todo) => todo.category)
-  @Field((type) => [Todo], { nullable: true })
+  @Field((type) => [Todo], { nullable: 'itemsAndList' })
   todos: Todo[];
 }
