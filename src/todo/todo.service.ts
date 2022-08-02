@@ -27,15 +27,15 @@ export class TodoService {
   }
 
   getTodosByCategory(category: string): Observable<ITodo[]> {
+    // return from(
+    //   this.todoRepository.findBy({
+    //     category: category, // Неизвестная ошибка
+    //   }),
+    // );
     return from(
-      this.todoRepository.find({
-        relations: {
-          category: true,
-        },
-        where: {
-          category: category,
-        },
-      }),
+      this.todoRepository.query(
+        `select * from todo where todo.category = '${category}'`,
+      ),
     );
   }
 

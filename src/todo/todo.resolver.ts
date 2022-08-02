@@ -33,9 +33,9 @@ export class TodoResolver {
   @Mutation((returns) => Todo)
   async updateTodo(
     @Args('id', { type: () => Int }) id: number,
-    @Args('text') text: string,
-    @Args('isCompleted') isCompleted: boolean,
-    @Args('category') category: string,
+    @Args('text', { nullable: true }) text: string,
+    @Args('isCompleted', { nullable: true }) isCompleted: boolean,
+    @Args('category', { nullable: true }) category: string,
   ) {
     return this.todoService.updateTodo({
       id: id,

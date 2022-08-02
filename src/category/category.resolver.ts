@@ -7,6 +7,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { Todo } from 'src/todo/models/todo.model';
 import { TodoService } from 'src/todo/todo.service';
 import { CategoryService } from './category.service';
 import { CategoryDto } from './models/category.dto';
@@ -56,7 +57,7 @@ export class CategoryResolver {
     return this.categoryService.deleteCategory(id);
   }
 
-  @ResolveField()
+  @ResolveField(() => [Todo], { nullable: true })
   async todos(@Parent() category: Category) {
     const { title } = category;
     return this.todoService.getTodosByCategory(title);
