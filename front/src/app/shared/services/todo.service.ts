@@ -92,7 +92,6 @@ export class TodoService {
   }
 
   updateTodo({ id, text, isCompleted, category }: ITodo): Observable<any> {
-    console.log(text, isCompleted);
     return this.apollo.mutate({
       mutation: gql`
         mutation UpdateTodo(
