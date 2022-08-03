@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICategory } from '../shared/models/category.interface';
+import { ITodo } from '../shared/models/todo.interface';
 import { CategoryService } from '../shared/services/category.service';
 
 @Component({

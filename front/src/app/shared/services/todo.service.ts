@@ -84,6 +84,10 @@ export class TodoService {
             id
             text
             isCompleted
+            category {
+              id
+              title
+            }
           }
         }
       `,

@@ -8,17 +8,20 @@ import { CreateCategoryComponent } from '../create-category/create-category.comp
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  dialogRef!: any;
-
   constructor(public dialog: MatDialog) {}
 
   openDialog() {
     const dialogRef = this.dialog.open(CreateCategoryComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result.data);
+      }
+    });
   }
 
   ngOnInit(): void {}
 
   addCategory() {
-    console.log('TODO: Open create category form');
+    this.openDialog();
   }
 }

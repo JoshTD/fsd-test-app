@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateTodoComponent } from '../create-todo/create-todo.component';
 import { ICategory } from '../shared/models/category.interface';
 import { ITodo } from '../shared/models/todo.interface';
 import { TodoService } from '../shared/services/todo.service';
@@ -13,14 +15,21 @@ export class CardComponent implements OnInit {
 
   todos: ITodo[] = [];
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.category.todos?.forEach((todo) => this.todos.push(todo));
   }
 
   addTodo() {
-    console.log('TODO: Open form create todo');
+    const dialogRef = this.dialog.open(CreateTodoComponent, {
+      data: { category: this.category.title },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result.data);
+      }
+    });
   }
 
   onStateChange(todo: ITodo) {

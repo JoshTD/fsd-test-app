@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ICategory } from '../shared/models/category.interface';
 import { ICategoryDto } from '../shared/models/categoryDto.interface';
 import { CategoryService } from '../shared/services/category.service';
 
@@ -14,6 +16,7 @@ export class CreateCategoryComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private fb: FormBuilder,
+    public dialogRef: MatDialogRef<CreateCategoryComponent>,
   ) {}
 
   ngOnInit(): void {
@@ -29,13 +32,13 @@ export class CreateCategoryComponent implements OnInit {
         .subscribe({
           next: (res: any) => {
             let category = res.data.createCategory;
-            console.log(category);
+            this.closeForm(category);
           },
           error: (err: any) => {
             console.error(err);
+            this.closeForm();
           },
         });
-      this.closeForm();
     }
   }
 
@@ -43,8 +46,10 @@ export class CreateCategoryComponent implements OnInit {
     this.closeForm();
   }
 
-  closeForm() {
-    console.log('TODO: Close form');
+  closeForm(category?: ICategory) {
+    if (category) {
+      this.dialogRef.close({ data: category });
+    } else this.dialogRef.close();
   }
 
   initFormGroup() {

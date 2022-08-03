@@ -1,4 +1,14 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { CategoryService } from 'src/category/category.service';
+import { Category } from 'src/category/models/category.model';
 import { TodoDto } from './models/todo.dto';
 import { ITodo } from './models/todo.interface';
 import { Todo } from './models/todo.model';
@@ -6,7 +16,10 @@ import { TodoService } from './todo.service';
 
 @Resolver((of) => Todo)
 export class TodoResolver {
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private categoryService: CategoryService,
+  ) {}
 
   @Query((returns) => [Todo])
   async todos() {
@@ -48,5 +61,11 @@ export class TodoResolver {
   @Mutation((returns) => Boolean)
   async deleteTodo(@Args('id', { type: () => Int }) id: number) {
     return this.todoService.deleteTodo(id);
+  }
+
+  @ResolveField(() => [Category], { nullable: true })
+  async category(@Parent() todo: Todo) {
+    const { category } = todo;
+    return this.categoryService.getCategoryByTitle(category.toString());
   }
 }
