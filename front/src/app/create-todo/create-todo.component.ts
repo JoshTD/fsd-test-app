@@ -1,15 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateCategoryComponent } from '../create-category/create-category.component';
 import { ICategory } from '../shared/models/category.interface';
+import { EditMode } from '../shared/models/editMode.enum';
 import { ITodo } from '../shared/models/todo.interface';
 import { ITodoDto } from '../shared/models/todoDto.interface';
 import { CategoryService } from '../shared/services/category.service';
@@ -29,7 +23,8 @@ export class CreateTodoComponent implements OnInit {
     private categoryService: CategoryService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CreateCategoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { category: string },
+    @Inject(MAT_DIALOG_DATA)
+    public data: { mode: EditMode; todo?: ITodo; category?: string },
   ) {}
 
   ngOnInit(): void {
@@ -45,8 +40,8 @@ export class CreateTodoComponent implements OnInit {
         } as ITodoDto)
         .subscribe({
           next: (res: any) => {
-            let todo = res.data.createTodo;
-            this.closeForm(todo);
+            let data = res.data.createTodo;
+            this.closeForm(data);
           },
           error: (err: any) => {
             console.error(err);
@@ -56,21 +51,101 @@ export class CreateTodoComponent implements OnInit {
     }
   }
 
+  onEdit() {
+    // TODO: Update todo item
+    if (this.todoFormGroup.valid) {
+      this.todoService
+        .updateTodo({
+          ...this.data.todo,
+          ...this.todoFormGroup.value,
+        } as ITodo)
+        .subscribe({
+          next: (res: any) => {
+            let data = res.data.updateTodo;
+            this.closeForm(data);
+          },
+          error: (err: any) => {
+            console.error(err);
+            this.closeForm();
+          },
+        });
+    }
+  }
+
+  onDelete() {
+    // TODO: Delete todo item
+    console.log('Delete');
+    if (this.data.todo?.id) {
+      this.todoService.deleteTodo(this.data.todo.id).subscribe({
+        next: (res: any) => {
+          let data = res.data;
+          this.closeForm(data);
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.closeForm();
+        },
+      });
+    }
+  }
+
   onCancel() {
     this.closeForm();
   }
 
-  closeForm(todo?: ITodo) {
-    if (todo) {
-      this.dialogRef.close({ data: todo });
+  closeForm(data?: any) {
+    if (data) {
+      this.dialogRef.close({ data: data });
     } else this.dialogRef.close();
   }
 
+  getEditMode() {
+    return EditMode;
+  }
+
+  getCardTitle() {
+    switch (this.data.mode) {
+      case EditMode.Add:
+        return 'Новая задача';
+      case EditMode.Edit:
+        return 'Изменить задачу';
+      case EditMode.View:
+        return 'Удалить задачу';
+      default:
+        return 'Задача';
+    }
+  }
+
   initFormGroup() {
-    this.todoFormGroup = this.fb.group({
-      text: ['', [Validators.required]],
-      category: [this.data.category ?? '', [Validators.required]],
-    });
+    switch (this.data.mode) {
+      case EditMode.Add:
+        this.todoFormGroup = this.fb.group({
+          text: ['', [Validators.required]],
+          category: [this.data.category ?? '', [Validators.required]],
+        });
+        break;
+      case EditMode.Edit:
+        this.todoFormGroup = this.fb.group({
+          text: [this.data.todo?.text ?? '', [Validators.required]],
+          category: [this.data.category ?? '', [Validators.required]],
+        });
+        break;
+      case EditMode.View:
+        this.todoFormGroup = this.fb.group({
+          text: [
+            { value: this.data.todo?.text ?? '', disabled: true },
+            [Validators.required],
+          ],
+          category: [
+            { value: this.data.category ?? '', disabled: true },
+            [Validators.required],
+          ],
+        });
+        break;
+      default:
+        console.error('EditMode undefined');
+        break;
+    }
   }
 
   initCategoryValues() {

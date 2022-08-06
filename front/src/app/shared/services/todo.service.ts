@@ -123,11 +123,10 @@ export class TodoService {
   deleteTodo(id: number): Observable<any> {
     return this.apollo.mutate({
       mutation: gql`
-        mutation DeleteTodo($id: Int!) 
-          deleteTodo(
-            id: $id
-          )
-        `,
+        mutation DeleteTodo($id: Int!) {
+          deleteTodo(id: $id)
+        }
+      `,
       variables: { id },
     });
   }

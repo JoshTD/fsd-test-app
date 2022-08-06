@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import { CreateTodoComponent } from './create-todo/create-todo.component';
 import { GraphQLModule } from './graphql.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { GraphQLModule } from './graphql.module';
     HttpClientModule,
     MaterialModule,
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     GraphQLModule,
   ],

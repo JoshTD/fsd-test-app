@@ -2,18 +2,38 @@
   <mat-toolbar>
     <span>{{ category.title }}</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button>
+    <button mat-button mat-icon-button>
       <mat-icon (click)="addTodo()">add</mat-icon>
     </button>
   </mat-toolbar>
   <mat-divider></mat-divider>
   <mat-list>
-    <mat-list-item *ngFor="let todo of todos">
-      <mat-checkbox
-        (click)="onStateChange(todo)"
-        [checked]="todo.isCompleted"
-      ></mat-checkbox>
-      <span class="todo-text">{{ todo.text }}</span>
-    </mat-list-item>
+    <ng-template ngFor let-todo [ngForOf]="todos">
+      <mat-list-item>
+        <mat-checkbox
+          (click)="onStateChange(todo)"
+          [checked]="todo.isCompleted"
+        ></mat-checkbox>
+        <span class="todo-text">{{ todo.text }}</span>
+        <button mat-icon-button>
+          <mat-icon
+            class="editIcon"
+            mat-button
+            color="primary"
+            (click)="editTodo(todo)"
+            >edit</mat-icon
+          >
+        </button>
+        <button mat-icon-button>
+          <mat-icon
+            class="editIcon"
+            mat-button
+            color="warn"
+            (click)="viewTodo(todo)"
+            >delete</mat-icon
+          >
+        </button>
+      </mat-list-item>
+    </ng-template>
   </mat-list>
 </mat-card>
