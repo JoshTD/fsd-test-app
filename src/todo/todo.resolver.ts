@@ -66,6 +66,10 @@ export class TodoResolver {
   @ResolveField(() => [Category], { nullable: true })
   async category(@Parent() todo: Todo) {
     const { category } = todo;
-    return this.categoryService.getCategoryByTitle(category.toString());
+    if (category?.title) {
+      return category; // При update поле уже собрано
+    } else {
+      return this.categoryService.getCategoryByTitle(category.toString()); // При create поле нужно собрать из title
+    }
   }
 }

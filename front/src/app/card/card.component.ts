@@ -19,7 +19,7 @@ export class CardComponent implements OnInit {
   constructor(private todoService: TodoService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.category.todos?.forEach((todo) => this.todos.push(todo));
+    this.category.todos!.forEach((todo) => this.todos.push(todo));
   }
 
   addTodo() {
@@ -32,7 +32,12 @@ export class CardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result.data);
+        let newTodo = result.data;
+        if (newTodo.category.title === this.category.title) {
+          this.addTodoData(newTodo);
+        } else {
+          console.log('TODO: Send to another card');
+        }
       }
     });
     // TODO: UpdateTodo
@@ -49,7 +54,12 @@ export class CardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result.data);
+        let newTodo = result.data;
+        if (newTodo.category.title === this.category.title) {
+          this.updateTodoData(newTodo);
+        } else {
+          console.log('TODO: Send to another card');
+        }
       }
     });
     // TODO: UpdateTodo
@@ -66,22 +76,48 @@ export class CardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result.data);
+        if (result.data.deleteTodo) this.deleteTodoData(todo.id!);
       }
     });
-    // TODO: UpdateTodo
   }
 
   onStateChange(todo: ITodo) {
-    let changed: ITodo = { ...todo };
-    changed.isCompleted = !changed.isCompleted;
-    this.todoService.updateTodo(changed).subscribe({
-      next: (res) => {
-        console.log(res.data.updateTodo);
-      },
-      error: (err) => {
-        console.error(err);
-      },
+    this.todoService
+      .updateTodo({
+        id: todo.id,
+        text: todo.text,
+        isCompleted: !todo.isCompleted,
+      })
+      .subscribe({
+        next: (res) => {
+          let newTodo: ITodo = res.data.updateTodo;
+          this.updateTodoData(newTodo);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
+
+  findTodoIndexById(id: number) {
+    return this.todos.findIndex((item) => item.id === id);
+  }
+
+  addTodoData(todo: ITodo) {
+    this.todos.push({
+      id: todo.id,
+      text: todo.text,
+      isCompleted: todo.isCompleted,
     });
+  }
+
+  updateTodoData(todo: ITodo) {
+    let index = this.findTodoIndexById(todo.id!);
+    this.todos[index] = todo;
+  }
+
+  deleteTodoData(id: number) {
+    let index = this.findTodoIndexById(id);
+    this.todos.splice(index, 1);
   }
 }

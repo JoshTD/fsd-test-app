@@ -52,7 +52,6 @@ export class CreateTodoComponent implements OnInit {
   }
 
   onEdit() {
-    // TODO: Update todo item
     if (this.todoFormGroup.valid) {
       this.todoService
         .updateTodo({
@@ -73,8 +72,6 @@ export class CreateTodoComponent implements OnInit {
   }
 
   onDelete() {
-    // TODO: Delete todo item
-    console.log('Delete');
     if (this.data.todo?.id) {
       this.todoService.deleteTodo(this.data.todo.id).subscribe({
         next: (res: any) => {

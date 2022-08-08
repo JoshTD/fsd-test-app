@@ -8,14 +8,16 @@ mat-checkbox {
   font-size: 16px;
 }
 
-span.todo-text {
-  margin: 10px 0px 5px 15px;
-
-  &:hover {
-  }
+mat-list-item.height {
+  height: fit-content;
 }
 
-.example-spacer {
+span.todo-text {
+  margin: 10px 0px 5px 15px;
+  word-break: break-word;
+}
+
+.spacer {
   flex: 1 1 auto;
 }
 

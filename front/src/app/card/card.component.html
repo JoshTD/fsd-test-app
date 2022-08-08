@@ -1,7 +1,7 @@
 <mat-card *ngIf="category">
   <mat-toolbar>
     <span>{{ category.title }}</span>
-    <span class="example-spacer"></span>
+    <span class="spacer"></span>
     <button mat-button mat-icon-button>
       <mat-icon (click)="addTodo()">add</mat-icon>
     </button>
@@ -9,12 +9,16 @@
   <mat-divider></mat-divider>
   <mat-list>
     <ng-template ngFor let-todo [ngForOf]="todos">
-      <mat-list-item>
+      <mat-list-item class="height">
         <mat-checkbox
           (click)="onStateChange(todo)"
           [checked]="todo.isCompleted"
         ></mat-checkbox>
-        <span class="todo-text">{{ todo.text }}</span>
+        <span
+          class="todo-text"
+          [style.text-decoration]="todo.isCompleted ? 'line-through' : 'none'"
+          >{{ todo.text }}</span
+        >
         <button mat-icon-button>
           <mat-icon
             class="editIcon"

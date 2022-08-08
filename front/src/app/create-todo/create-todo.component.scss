@@ -3,6 +3,14 @@ form {
   flex-direction: column;
   min-width: 500px;
 
+  @media screen and (max-width: 750px) {
+    min-width: 300px;
+  }
+
+  @media screen and (max-width: 480px) {
+    min-width: 100%;
+  }
+
   mat-form-field {
     margin-top: 15px;
     width: 100%;

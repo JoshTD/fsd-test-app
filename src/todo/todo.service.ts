@@ -29,7 +29,7 @@ export class TodoService {
   getTodosByCategory(category: string): Observable<ITodo[]> {
     // return from(
     //   this.todoRepository.findBy({
-    //     category: category, // Неизвестная ошибка
+    //     category: category, // Неизвестная ошибка, возможно нужно дописать/переписать соединение
     //   }),
     // );
     return from(
