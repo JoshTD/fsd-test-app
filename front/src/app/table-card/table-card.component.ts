@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ICategory } from '../shared/models/category.interface';
 import { ITodo } from '../shared/models/todo.interface';
-import { CategoryService } from '../shared/services/category.service';
 
 @Component({
   selector: 'table-card',
@@ -9,19 +8,14 @@ import { CategoryService } from '../shared/services/category.service';
   styleUrls: ['./table-card.component.scss'],
 })
 export class TableCardComponent implements OnInit {
-  categories!: ICategory[];
+  @Input() categories!: ICategory[];
+  @Output() onTodoEmit: EventEmitter<ITodo> = new EventEmitter<ITodo>();
 
-  constructor(private categoryService: CategoryService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.categoryService.getCategoriesWithTodos().subscribe({
-      next: (res) => {
-        let categories: ICategory[] = Array.from(res.data.categories);
-        this.categories = categories.sort((a, b) => a.id! - b.id!);
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
+  ngOnInit(): void {}
+
+  onTodoChange(todo: ITodo) {
+    this.onTodoEmit.emit(todo);
   }
 }

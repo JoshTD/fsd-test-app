@@ -1,2 +1,5 @@
 <header></header>
-<table-card></table-card>
+<table-card
+  [categories]="categories"
+  (onTodoEmit)="onTodoEmit($event)"
+></table-card>

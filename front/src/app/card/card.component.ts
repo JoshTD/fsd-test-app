@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTodoComponent } from '../create-todo/create-todo.component';
 import { ICategory } from '../shared/models/category.interface';
@@ -13,13 +13,16 @@ import { TodoService } from '../shared/services/todo.service';
 })
 export class CardComponent implements OnInit {
   @Input() category!: ICategory;
+  @Output() onTodoChange: EventEmitter<ITodo> = new EventEmitter<ITodo>();
 
   todos: ITodo[] = [];
 
   constructor(private todoService: TodoService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.category.todos!.forEach((todo) => this.todos.push(todo));
+    let todos: ITodo[] = [];
+    this.category.todos!.forEach((todo) => todos.push(todo));
+    this.todos = todos.sort((a, b) => a.id! - b.id!);
   }
 
   addTodo() {
@@ -36,11 +39,11 @@ export class CardComponent implements OnInit {
         if (newTodo.category.title === this.category.title) {
           this.addTodoData(newTodo);
         } else {
+          this.onTodoChange.emit(newTodo);
           console.log('TODO: Send to another card');
         }
       }
     });
-    // TODO: UpdateTodo
   }
 
   editTodo(todo: ITodo) {
@@ -58,11 +61,11 @@ export class CardComponent implements OnInit {
         if (newTodo.category.title === this.category.title) {
           this.updateTodoData(newTodo);
         } else {
-          console.log('TODO: Send to another card');
+          this.deleteTodoData(newTodo.id);
+          this.onTodoChange.emit(newTodo);
         }
       }
     });
-    // TODO: UpdateTodo
   }
 
   viewTodo(todo: ITodo) {
@@ -113,11 +116,19 @@ export class CardComponent implements OnInit {
 
   updateTodoData(todo: ITodo) {
     let index = this.findTodoIndexById(todo.id!);
-    this.todos[index] = todo;
+    if (index > -1) {
+      this.todos[index] = todo;
+    } else {
+      console.error('Todo not found', todo);
+    }
   }
 
   deleteTodoData(id: number) {
     let index = this.findTodoIndexById(id);
-    this.todos.splice(index, 1);
+    if (index > -1) {
+      this.todos.splice(index, 1);
+    } else {
+      console.error('Todo id not found', id);
+    }
   }
 }
