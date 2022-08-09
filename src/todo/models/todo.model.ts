@@ -23,7 +23,10 @@ export class Todo {
   @Field((type) => Boolean)
   isCompleted: boolean;
 
-  @ManyToOne((type) => Category, (category) => category.todos)
+  @ManyToOne((type) => Category, (category) => category.todos, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'category', referencedColumnName: 'title' })
   @Field((type) => Category, { nullable: true })
   category: Category;

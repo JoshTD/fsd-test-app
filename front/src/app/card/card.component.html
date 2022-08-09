@@ -1,6 +1,24 @@
 <mat-card *ngIf="category">
   <mat-toolbar>
     <span>{{ category.title }}</span>
+    <button mat-icon-button>
+      <mat-icon
+        class="editIcon"
+        mat-button
+        color="primary"
+        (click)="editCategory(category)"
+        >edit</mat-icon
+      >
+    </button>
+    <button mat-icon-button>
+      <mat-icon
+        class="editIcon"
+        mat-button
+        color="warn"
+        (click)="viewCategory(category)"
+        >delete</mat-icon
+      >
+    </button>
     <span class="spacer"></span>
     <button mat-button mat-icon-button>
       <mat-icon (click)="addTodo()">add</mat-icon>

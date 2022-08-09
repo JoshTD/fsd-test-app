@@ -91,15 +91,13 @@ export class CategoryService {
   updateCategory({ id, title }: ICategory): Observable<any> {
     return this.apollo.mutate({
       mutation: gql`
-        mutation UpdateCategory($id: Int!, $title: String!) 
-          updateCategory(
-            id: $id
-            title: $title
-          ) {
+        mutation UpdateCategory($id: Int!, $title: String!) {
+          updateCategory(id: $id, title: $title) {
             id
             title
           }
-        `,
+        }
+      `,
       variables: { id, title },
     });
   }
@@ -107,11 +105,10 @@ export class CategoryService {
   deleteCategory(id: number): Observable<any> {
     return this.apollo.mutate({
       mutation: gql`
-        mutation DeleteCategory($id: Int!) 
-          deleteCategory(
-            id: $id
-          )
-        `,
+        mutation DeleteCategory($id: Int!) {
+          deleteCategory(id: $id)
+        }
+      `,
       variables: { id },
     });
   }

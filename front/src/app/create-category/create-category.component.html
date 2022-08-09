@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-title>Новая категория</mat-card-title>
+  <mat-card-title>{{ getCardTitle() }}</mat-card-title>
   <mat-divider inset></mat-divider>
   <form [formGroup]="categoryFormGroup">
     <mat-form-field appearance="fill">
@@ -9,11 +9,30 @@
   </form>
   <mat-card-actions>
     <button
+      *ngIf="data.mode === getEditMode().Add"
       mat-button
+      color="primary"
       [disabled]="categoryFormGroup.invalid"
       (click)="onSubmit()"
     >
       Добавить
+    </button>
+    <button
+      *ngIf="data.mode === getEditMode().Edit"
+      mat-button
+      color="primary"
+      [disabled]="categoryFormGroup.invalid"
+      (click)="onEdit()"
+    >
+      Сохранить
+    </button>
+    <button
+      *ngIf="data.mode === getEditMode().View"
+      mat-button
+      color="warn"
+      (click)="onDelete()"
+    >
+      Удалить
     </button>
     <button mat-button (click)="onCancel()">Отмена</button>
   </mat-card-actions>

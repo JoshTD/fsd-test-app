@@ -30,8 +30,12 @@ export class CategoryService {
   }
 
   updateCategory(categoryData: ICategory): Observable<ICategory> {
-    this.categoryRepository.update({ id: categoryData.id }, categoryData);
-    return this.getCategoryById(categoryData.id);
+    return from(
+      this.categoryRepository.save({
+        id: categoryData.id,
+        title: categoryData.title,
+      }),
+    );
   }
 
   deleteCategory(id: number): Observable<Boolean> {

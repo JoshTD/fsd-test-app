@@ -91,9 +91,7 @@ export class CreateTodoComponent implements OnInit {
   }
 
   closeForm(data?: any) {
-    if (data) {
-      this.dialogRef.close({ data: data });
-    } else this.dialogRef.close();
+    data ? this.dialogRef.close({ data: data }) : this.dialogRef.close();
   }
 
   getEditMode() {

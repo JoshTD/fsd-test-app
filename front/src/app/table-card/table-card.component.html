@@ -1,7 +1,11 @@
 <div class="container">
   <div class="cards" *ngIf="categories">
     <div *ngFor="let category of categories" class="card">
-      <card [category]="category" (onTodoChange)="onTodoChange($event)"></card>
+      <card
+        [category]="category"
+        (onTodoChange)="onTodoChange($event)"
+        (onCategoryChange)="onCategoryChange($event)"
+      ></card>
     </div>
   </div>
 </div>

@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateCategoryComponent } from '../create-category/create-category.component';
 import { CreateTodoComponent } from '../create-todo/create-todo.component';
 import { ICategory } from '../shared/models/category.interface';
 import { EditMode } from '../shared/models/editMode.enum';
+import { EventType } from '../shared/models/eventType.enum';
 import { ITodo } from '../shared/models/todo.interface';
 import { TodoService } from '../shared/services/todo.service';
 
@@ -14,6 +16,8 @@ import { TodoService } from '../shared/services/todo.service';
 export class CardComponent implements OnInit {
   @Input() category!: ICategory;
   @Output() onTodoChange: EventEmitter<ITodo> = new EventEmitter<ITodo>();
+  @Output() onCategoryChange: EventEmitter<[ICategory, EventType]> =
+    new EventEmitter<[ICategory, EventType]>();
 
   todos: ITodo[] = [];
 
@@ -40,7 +44,6 @@ export class CardComponent implements OnInit {
           this.addTodoData(newTodo);
         } else {
           this.onTodoChange.emit(newTodo);
-          console.log('TODO: Send to another card');
         }
       }
     });
@@ -80,6 +83,37 @@ export class CardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.data.deleteTodo) this.deleteTodoData(todo.id!);
+      }
+    });
+  }
+
+  editCategory(category: ICategory) {
+    const dialogRef = this.dialog.open(CreateCategoryComponent, {
+      data: {
+        mode: EditMode.Edit,
+        category: category,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let newCategory = result.data;
+        this.onCategoryChange.emit([newCategory, EventType.Edit]);
+      }
+    });
+  }
+
+  viewCategory(category: ICategory) {
+    const dialogRef = this.dialog.open(CreateCategoryComponent, {
+      data: {
+        mode: EditMode.View,
+        category: category,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (result.data.deleteCategory) {
+          this.onCategoryChange.emit([category, EventType.Delete]);
+        }
       }
     });
   }

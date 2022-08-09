@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICategory } from '../shared/models/category.interface';
+import { EventType } from '../shared/models/eventType.enum';
 import { ITodo } from '../shared/models/todo.interface';
 import { CategoryService } from '../shared/services/category.service';
 
@@ -23,6 +24,40 @@ export class MainComponent implements OnInit {
         console.error(err);
       },
     });
+  }
+
+  onCategoryAdd(category: ICategory) {
+    if (this.categories.findIndex((item) => item.id === category.id) >= -1)
+      this.categories.push({ ...category, todos: [] } as ICategory);
+  }
+
+  onCategoryEmit(data: [ICategory, EventType]) {
+    let category = data[0];
+    let event = data[1];
+    switch (event) {
+      case EventType.Add:
+        console.error('Unemplemented and unexpected');
+        return;
+      case EventType.Edit:
+        let i = this.findCategoryIndexById(category.id!);
+        if (i > -1) {
+          this.categories.splice(i, 1, { ...this.categories[i], ...category });
+        } else {
+          console.error('Category not found to update');
+        }
+        break;
+      case EventType.Delete:
+        let index = this.findCategoryIndexById(category.id!);
+        if (index > -1) {
+          this.categories.splice(index, 1);
+        } else {
+          console.error('Category not found to delete');
+        }
+        break;
+      default:
+        console.error('Event type undefined');
+        return;
+    }
   }
 
   onTodoEmit(todo: ITodo) {
