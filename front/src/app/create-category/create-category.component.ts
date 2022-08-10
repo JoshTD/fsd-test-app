@@ -53,8 +53,9 @@ export class CreateCategoryComponent implements OnInit {
       };
       this.categoryService.updateCategory(newCategory).subscribe({
         next: (res: any) => {
-          let data = res.data.updateCategory;
-          this.closeForm(data);
+          if (res.data.updateCategory) {
+            this.closeForm(newCategory);
+          }
         },
         error: (err: any) => {
           console.error(err);

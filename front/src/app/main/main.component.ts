@@ -26,24 +26,21 @@ export class MainComponent implements OnInit {
     });
   }
 
-  onCategoryAdd(category: ICategory) {
-    if (this.categories.findIndex((item) => item.id === category.id) >= -1)
-      this.categories.push({ ...category, todos: [] } as ICategory);
-  }
-
   onCategoryEmit(data: [ICategory, EventType]) {
     let category = data[0];
     let event = data[1];
     switch (event) {
       case EventType.Add:
-        this.categories.push({ ...category, todos: [] });
+        if (
+          this.categories.findIndex((item) => item.id === category.id) === -1
+        ) {
+          this.categories.push({ ...category, todos: [] } as ICategory);
+        }
         break;
       case EventType.Edit:
         let i = this.findCategoryIndexById(category.id!);
         if (i > -1) {
           this.categories.splice(i, 1, { ...this.categories[i], ...category });
-        } else {
-          console.error('Category not found to update');
         }
         break;
       case EventType.Delete:
@@ -60,12 +57,14 @@ export class MainComponent implements OnInit {
     }
   }
 
-  onTodoEmit(todo: ITodo) {
+  onTodoEmit(todo: any) {
     this.insertTodo(todo);
   }
 
-  insertTodo(todo: ITodo) {
-    let index = this.findCategoryIndexById(todo.category!.id!);
+  insertTodo(todo: any) {
+    let title: string = todo.category?.title ?? todo.category;
+    let categoryObj = this.findCategoryByTitle(title);
+    let index = this.findCategoryIndexById(categoryObj?.id!);
 
     if (index <= -1) {
       console.error('Category not found', todo.category);

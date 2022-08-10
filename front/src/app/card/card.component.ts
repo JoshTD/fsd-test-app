@@ -77,7 +77,8 @@ export class CardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let newTodo = result.data;
-        if (newTodo.category.title === this.category.title) {
+        let category = newTodo.category?.title ?? newTodo.category;
+        if (category === this.category.title) {
           this.updateTodoData(newTodo);
         } else {
           this.deleteTodoData(newTodo.id);

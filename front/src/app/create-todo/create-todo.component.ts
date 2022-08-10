@@ -81,21 +81,21 @@ export class CreateTodoComponent implements OnInit {
 
   onEdit() {
     if (this.todoFormGroup.valid) {
-      this.todoService
-        .updateTodo({
-          ...this.data.todo,
-          ...this.todoFormGroup.value,
-        } as ITodo)
-        .subscribe({
-          next: (res: any) => {
-            let data = res.data.updateTodo;
-            this.closeForm(data);
-          },
-          error: (err: any) => {
-            console.error(err);
-            this.closeForm();
-          },
-        });
+      const newTodo: ITodo = {
+        ...this.data.todo,
+        ...this.todoFormGroup.value,
+      };
+      this.todoService.updateTodo(newTodo).subscribe({
+        next: (res: any) => {
+          if (res.data.updateTodo) {
+            this.closeForm(newTodo);
+          }
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.closeForm();
+        },
+      });
     }
   }
 
