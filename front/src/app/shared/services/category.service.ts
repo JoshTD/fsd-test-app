@@ -20,6 +20,7 @@ export class CategoryService {
           }
         }
       `,
+      fetchPolicy: 'network-only',
     });
   }
 

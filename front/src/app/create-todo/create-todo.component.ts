@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateCategoryComponent } from '../create-category/create-category.component';
 import { ICategory } from '../shared/models/category.interface';
+import { ICategoryDto } from '../shared/models/categoryDto.interface';
 import { EditMode } from '../shared/models/editMode.enum';
 import { ITodo } from '../shared/models/todo.interface';
 import { ITodoDto } from '../shared/models/todoDto.interface';
@@ -15,8 +16,12 @@ import { TodoService } from '../shared/services/todo.service';
   styleUrls: ['./create-todo.component.scss'],
 })
 export class CreateTodoComponent implements OnInit {
+  @Output() onCreateCategory: EventEmitter<ICategory> =
+    new EventEmitter<ICategory>();
+
   categories!: ICategory[];
   todoFormGroup!: FormGroup;
+  categoryFormGroup!: FormGroup;
 
   constructor(
     private todoService: TodoService,
@@ -30,6 +35,29 @@ export class CreateTodoComponent implements OnInit {
   ngOnInit(): void {
     this.initCategoryValues();
     this.initFormGroup();
+  }
+
+  onNewCategory() {
+    if (this.categoryFormGroup.valid) {
+      this.categoryService
+        .createCategory({
+          ...this.categoryFormGroup.value,
+        } as ICategoryDto)
+        .subscribe({
+          next: (res: any) => {
+            let category = res.data.createCategory;
+            this.categories = [...this.categories, category];
+            this.todoFormGroup.setValue({
+              ...this.todoFormGroup.value,
+              category: category.title,
+            });
+            this.onCreateCategory.emit(category);
+          },
+          error: (err: any) => {
+            console.error(err);
+          },
+        });
+    }
   }
 
   onSubmit() {
@@ -118,11 +146,17 @@ export class CreateTodoComponent implements OnInit {
           text: ['', [Validators.required]],
           category: [this.data.category ?? '', [Validators.required]],
         });
+        this.categoryFormGroup = this.fb.group({
+          title: ['', [Validators.required]],
+        });
         break;
       case EditMode.Edit:
         this.todoFormGroup = this.fb.group({
           text: [this.data.todo?.text ?? '', [Validators.required]],
           category: [this.data.category ?? '', [Validators.required]],
+        });
+        this.categoryFormGroup = this.fb.group({
+          title: ['', [Validators.required]],
         });
         break;
       case EditMode.View:
@@ -136,6 +170,9 @@ export class CreateTodoComponent implements OnInit {
             [Validators.required],
           ],
         });
+        this.categoryFormGroup = this.fb.group({
+          title: [{ value: '', disabled: true }, [Validators.required]],
+        });
         break;
       default:
         console.error('EditMode undefined');
@@ -146,7 +183,9 @@ export class CreateTodoComponent implements OnInit {
   initCategoryValues() {
     this.categoryService.getCategories().subscribe({
       next: (res: any) => {
-        this.categories = res.data.categories;
+        this.categories = res.data.categories.sort(
+          (a: any, b: any) => a.id! - b.id!,
+        );
       },
       error: (err: any) => {
         console.error(err);

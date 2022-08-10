@@ -36,8 +36,8 @@ export class MainComponent implements OnInit {
     let event = data[1];
     switch (event) {
       case EventType.Add:
-        console.error('Unemplemented and unexpected');
-        return;
+        this.categories.push({ ...category, todos: [] });
+        break;
       case EventType.Edit:
         let i = this.findCategoryIndexById(category.id!);
         if (i > -1) {

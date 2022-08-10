@@ -9,11 +9,27 @@
     <mat-form-field appearance="fill" [formGroup]="todoFormGroup">
       <mat-label>Категория</mat-label>
       <mat-select formControlName="category">
+        <mat-option [value]="null">Создать новую категорию</mat-option>
         <ng-template ngFor let-category [ngForOf]="categories">
           <mat-option [value]="category.title">{{ category.title }}</mat-option>
         </ng-template>
       </mat-select>
     </mat-form-field>
+    <ng-template [ngIf]="todoFormGroup.value.category === null">
+      <mat-form-field appearance="fill" [formGroup]="categoryFormGroup">
+        <mat-label>Новая категория</mat-label>
+        <input matInput formControlName="title" />
+        <button mat-icon-button matSuffix>
+          <mat-icon
+            class="editIcon"
+            mat-button
+            color="primary"
+            (click)="onNewCategory()"
+            >done</mat-icon
+          >
+        </button>
+      </mat-form-field>
+    </ng-template>
   </form>
   <mat-card-actions>
     <button

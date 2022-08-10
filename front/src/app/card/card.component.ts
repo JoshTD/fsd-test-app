@@ -37,6 +37,14 @@ export class CardComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateTodoComponent, {
       data: data,
     });
+    dialogRef.componentInstance.onCreateCategory.subscribe({
+      next: (category: ICategory) => {
+        this.onCategoryChange.emit([category, EventType.Add]);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let newTodo = result.data;
@@ -57,6 +65,14 @@ export class CardComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(CreateTodoComponent, {
       data: data,
+    });
+    dialogRef.componentInstance.onCreateCategory.subscribe({
+      next: (category: ICategory) => {
+        this.onCategoryChange.emit([category, EventType.Add]);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

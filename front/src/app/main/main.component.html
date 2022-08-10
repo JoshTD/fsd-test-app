@@ -1,4 +1,7 @@
-<header (onCategoryAdd)="onCategoryAdd($event)"></header>
+<header
+  (onTodoCreate)="onTodoEmit($event)"
+  (onCategoryCreate)="onCategoryEmit($event)"
+></header>
 <table-card
   [categories]="categories"
   (onCategoryEmit)="onCategoryEmit($event)"
